@@ -1493,7 +1493,7 @@ namespace System.Compiler{
     {
       AssemblyNode assembly = this.assembly;
       AssemblyRow[] assemblyTable = this.writer.assemblyTable = new AssemblyRow[1];
-      assemblyTable[0].HashAlgId = (int)AssemblyHashAlgorithm.SHA1;
+      assemblyTable[0].HashAlgId = (int)AssemblyHashAlgorithm.SHA256;
       assemblyTable[0].Flags = (int)assembly.Flags;
       if (assembly.Version == null) assembly.Version = new Version(1,0,0,0);
       assemblyTable[0].MajorVersion = assembly.Version.Major;
@@ -1864,7 +1864,7 @@ namespace System.Compiler{
             long size = fs.Length;
             byte[] buffer = new byte[size];
             fs.Read(buffer, 0, (int)size);
-            var sha = new System.Security.Cryptography.SHA1CryptoServiceProvider();
+            var sha = new System.Security.Cryptography.SHA256CryptoServiceProvider();
             byte[] hash = sha.ComputeHash(buffer);
             ftr[i].HashValue = this.GetBlobIndex(hash);
           }catch{}

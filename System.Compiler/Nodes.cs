@@ -1715,7 +1715,10 @@ namespace System.Compiler{
   public enum AssemblyHashAlgorithm{
     None = 0x0000,
     MD5  = 0x8003,
-    SHA1 = 0x8004
+    SHA1 = 0x8004,
+    SHA256 = 0x800c,
+    SHA384 = 0x800d,
+    SHA512 = 0x800e
   }
   [Flags]
   public enum CallingConventionFlags{
@@ -5481,7 +5484,7 @@ namespace System.Compiler{
       get{return this.directory;}
       set{this.directory = value;}
     }
-    private AssemblyHashAlgorithm hashAlgorithm = AssemblyHashAlgorithm.SHA1;
+    private AssemblyHashAlgorithm hashAlgorithm = AssemblyHashAlgorithm.SHA256;
     public AssemblyHashAlgorithm HashAlgorithm{
       get{return this.hashAlgorithm;}
       set{this.hashAlgorithm = value;}
@@ -6701,7 +6704,7 @@ namespace System.Compiler{
       StringBuilder str;
       if (n > 8){
 #if !ROTOR
-        var sha = new System.Security.Cryptography.SHA1CryptoServiceProvider();
+        var sha = new System.Security.Cryptography.SHA256CryptoServiceProvider();
         publicKey = sha.ComputeHash(publicKey);
         byte[] token = new byte[8];
         for (int i = 0, m = publicKey.Length-1; i < 8; i++)
@@ -6822,7 +6825,7 @@ namespace System.Compiler{
         if (this.PublicKeyOrToken == null || this.PublicKeyOrToken.Length == 0) return null;
         if (this.PublicKeyOrToken.Length == 8) return this.token = this.PublicKeyOrToken;
 #if !ROTOR
-        var sha = new System.Security.Cryptography.SHA1CryptoServiceProvider();
+        var sha = new System.Security.Cryptography.SHA256CryptoServiceProvider();
         byte[] hashedKey = sha.ComputeHash(this.PublicKeyOrToken);
         byte[] token = new byte[8];
         for (int i = 0, n = hashedKey.Length-1; i < 8; i++) token[i] = hashedKey[n-i];
@@ -7104,9 +7107,9 @@ namespace System.Compiler{
         if (this.PublicKeyOrToken == null || this.PublicKeyOrToken.Length == 0) return null;
         if (this.PublicKeyOrToken.Length == 8) return this.token = this.PublicKeyOrToken;
 #if !ROTOR
-        System.Security.Cryptography.SHA1 sha1 = new System.Security.Cryptography.SHA1CryptoServiceProvider();
-        byte[] hashedKey1 = sha1.ComputeHash(this.PublicKeyOrToken);
-        var sha = new System.Security.Cryptography.SHA1CryptoServiceProvider();
+        System.Security.Cryptography.SHA256 sha256 = new System.Security.Cryptography.SHA256CryptoServiceProvider();
+        byte[] hashedKey1 = sha256.ComputeHash(this.PublicKeyOrToken);
+        var sha = new System.Security.Cryptography.SHA256CryptoServiceProvider();
         byte[] hashedKey = sha.ComputeHash(this.PublicKeyOrToken);
         byte[] token = new byte[8];
         for (int i = 0, n = hashedKey.Length-1; i < 8; i++) token[i] = hashedKey[n-i];
